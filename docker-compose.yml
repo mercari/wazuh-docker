@@ -11,6 +11,9 @@ services:
       - "1515:1515"
       - "514:514/udp"
       - "55000:55000"
+    volumes:
+      - wazuh_datastore:/var/ossec/data/:Z
+
 
   elasticsearch:
     image: wazuh/wazuh-elasticsearch:3.12.3_7.6.2
@@ -28,6 +31,8 @@ services:
         soft: -1
         hard: -1
     mem_limit: 2g
+    volumes:
+      - elasticsearch_datastore:/usr/share/elasticsearch/data:Z
 
   kibana:
     image: wazuh/wazuh-kibana:3.12.3_7.6.2
@@ -38,6 +43,11 @@ services:
     links:
       - elasticsearch:elasticsearch
       - wazuh:wazuh
+    environment:
+      - API_USER=k-oguma
+      - API_PASS=hogefuga
+      - ELASTICSEARCH_USERNAME=k-oguma
+      - ELASTICSEARCH_PASSWORD=hogefuga
 
   nginx:
     image: k-oguma/wazuh-nginx:3.12.3_7.6.2_k1
