@@ -43,25 +43,32 @@ else
   echo "Kibana credentials already configured"
 fi
 
-if [ "x${NGINX_PORT}" = "x" ]; then
-  NGINX_PORT=443
-fi
-
 if [ "x${KIBANA_HOST}" = "x" ]; then
   KIBANA_HOST="kibana:5601"
 fi
 
+NGINX_TLS_PARAMS="ssl http2"
+
+
 echo "Configuring NGINX"
-cat > /etc/nginx/conf.d/default.conf <<EOF
+
+if [[ $NGINX_PORT != 443 ]]; then unset NGINX_TLS_PARAMS ;fi
+
+if [[ $NGINX_PORT != 80 ]]; then
+  cat > /etc/nginx/conf.d/default.conf <<EOF
 server {
     listen 80;
     listen [::]:80;
-    return 301 https://\$host:${NGINX_PORT}\$request_uri;
+    return 301 ${NGINX_URL_SCHEME}://\$host:${NGINX_PORT}\$request_uri;
 }
 
+EOF
+fi
+
+cat >> /etc/nginx/conf.d/default.conf <<EOF
 server {
-    listen ${NGINX_PORT} default_server ssl http2;
-    listen [::]:${NGINX_PORT} ssl http2;
+    listen ${NGINX_PORT} default_server ${NGINX_TLS_PARAMS};
+    listen [::]:${NGINX_PORT} ${NGINX_TLS_PARAMS};
     ssl_certificate /etc/nginx/conf.d/ssl/certs/kibana-access.pem;
     ssl_certificate_key /etc/nginx/conf.d/ssl/private/kibana-access.key;
     location / {

@@ -40,16 +40,31 @@ services:
       - wazuh:wazuh
 
   nginx:
-    image: wazuh/wazuh-nginx:3.12.3_7.6.2
+    image: k-oguma/wazuh-nginx:3.12.3_7.6.2_k1
     hostname: nginx
     restart: always
     environment:
-      - NGINX_PORT=443
-      - NGINX_CREDENTIALS
+      - NGINX_PORT=8080
+      # Internal access via SSL termination on OAuth2_proxy.
+      - NGINX_URL_SCHEME=http
     ports:
       - "80:80"
       - "443:443"
+      - "8080:8080"
     depends_on:
       - kibana
     links:
       - kibana:kibana
+
+volumes:
+  wazuh_datastore:
+    driver_opts:
+      type: none
+      device: /srv/docker-volumes/wazuh
+      o: bind
+  elasticsearch_datastore:
+    driver_opts:
+      type: none
+      device: /srv/docker-volumes/elasticsearch
+      o: bind
+
