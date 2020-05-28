@@ -14,6 +14,8 @@ services:
     environment:
       - API_USER=hoge
       - API_PASS=fuga
+    volumes:
+      - wazuh_datastore:/var/ossec/data/:Z
 
   elasticsearch:
     image: wazuh/wazuh-elasticsearch:3.12.3_7.6.2
@@ -43,6 +45,8 @@ services:
           grep $$(curl -s "https://download.java.net/java/GA/jdk13.0.2/d4173c853231432d94f001e99d882ca7/8/GPL/openjdk-13.0.2_linux-x64_bin.tar.gz.sha256") &&
           tar xvfz openjdk-13.0.2_linux-x64_bin.tar.gz
       '
+    volumes:
+      - elasticsearch_datastore:/usr/share/elasticsearch/data:Z
 
   kibana:
     image: wazuh/wazuh-kibana:3.12.3_7.6.2
@@ -60,17 +64,30 @@ services:
       - ELASTICSEARCH_PASSWORD=fuga
 
   nginx:
-    image: wazuh/wazuh-nginx:3.12.3_7.6.2
+    image: k-oguma/wazuh-nginx:3.12.3_7.6.2_k1
     hostname: nginx
     restart: always
     environment:
       - NGINX_PORT=443
       - NGINX_CREDENTIALS=hoge:fuga
-      # Internal access via SSL termination on OAuth2_proxy.
     ports:
       - "80:80"
       - "443:443"
+      - "8080:8080"
     depends_on:
       - kibana
     links:
       - kibana:kibana
+
+volumes:
+  wazuh_datastore:
+    driver_opts:
+      type: none
+      device: /srv/docker-volumes/wazuh
+      o: bind
+  elasticsearch_datastore:
+    driver_opts:
+      type: none
+      device: /srv/docker-volumes/elasticsearch
+      o: bind
+
