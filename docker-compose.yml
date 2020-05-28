@@ -11,6 +11,9 @@ services:
       - "1515:1515"
       - "514:514/udp"
       - "55000:55000"
+    environment:
+      - API_USER=hoge
+      - API_PASS=fuga
 
   elasticsearch:
     image: wazuh/wazuh-elasticsearch:3.12.3_7.6.2
@@ -19,15 +22,27 @@ services:
     ports:
       - "9200:9200"
     environment:
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "ES_JAVA_OPTS=-Xms24g -Xmx24g -XX:MaxMetaspaceSize=512m -XX:MaxGCPauseMillis=2000 -XX:+UnlockDiagnosticVMOptions -XX:+PrintCompressedOopsMode"
       - ELASTIC_CLUSTER=true
       - CLUSTER_NODE_MASTER=true
       - CLUSTER_MASTER_NODE_NAME=es01
+      - ELASTICSEARCH_USERNAME=hoge
+      - ELASTICSEARCH_PASSWORD=fuga
+      - API_USER=hoge
+      - API_PASS=fuga
+      - bootstrap.memory_lock=true
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 2g
+    mem_limit: 30g
+    command: >
+      sh -c '
+        curl -O https://download.java.net/java/GA/jdk13.0.2/d4173c853231432d94f001e99d882ca7/8/GPL/openjdk-13.0.2_linux-x64_bin.tar.gz &&
+        /bin/sha256sum openjdk-13.0.2_linux-x64_bin.tar.gz |
+          grep $$(curl -s "https://download.java.net/java/GA/jdk13.0.2/d4173c853231432d94f001e99d882ca7/8/GPL/openjdk-13.0.2_linux-x64_bin.tar.gz.sha256") &&
+          tar xvfz openjdk-13.0.2_linux-x64_bin.tar.gz
+      '
 
   kibana:
     image: wazuh/wazuh-kibana:3.12.3_7.6.2
@@ -38,6 +53,11 @@ services:
     links:
       - elasticsearch:elasticsearch
       - wazuh:wazuh
+    environment:
+      - API_USER=hoge
+      - API_PASS=fuga
+      - ELASTICSEARCH_USERNAME=hoge
+      - ELASTICSEARCH_PASSWORD=fuga
 
   nginx:
     image: wazuh/wazuh-nginx:3.12.3_7.6.2
@@ -45,7 +65,8 @@ services:
     restart: always
     environment:
       - NGINX_PORT=443
-      - NGINX_CREDENTIALS
+      - NGINX_CREDENTIALS=hoge:fuga
+      # Internal access via SSL termination on OAuth2_proxy.
     ports:
       - "80:80"
       - "443:443"
