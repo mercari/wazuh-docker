@@ -52,7 +52,7 @@ NGINX_TLS_PARAMS="ssl http2"
 
 echo "Configuring NGINX"
 
-if [[ $NGINX_PORT != 443 ]]; then unset NGINX_TLS_PARAMS ;fi
+[[ $NGINX_PORT != 443 ]] && unset NGINX_TLS_PARAMS
 
 if [[ $NGINX_PORT != 80 ]]; then
   cat > /etc/nginx/conf.d/default.conf <<EOF
@@ -65,6 +65,9 @@ server {
 EOF
 fi
 
+COMMENT_OUT=''
+[[ $BASIC_AUTH == 'no' ]] && COMMENT_OUT='#'
+
 cat >> /etc/nginx/conf.d/default.conf <<EOF
 server {
     listen ${NGINX_PORT} default_server ${NGINX_TLS_PARAMS};
@@ -72,7 +75,7 @@ server {
     ssl_certificate /etc/nginx/conf.d/ssl/certs/kibana-access.pem;
     ssl_certificate_key /etc/nginx/conf.d/ssl/private/kibana-access.key;
     location / {
-        auth_basic "Restricted";
+        ${COMMENT_OUT}auth_basic "Restricted";
         auth_basic_user_file /etc/nginx/conf.d/kibana.htpasswd;
         proxy_pass http://${KIBANA_HOST}/;
         proxy_buffer_size          128k;
