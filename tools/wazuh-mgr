@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+# -BEGIN USAGE-
+# $0 [Option] <wazuh or ossec command>
+#
+# Option:
+#   -h        display this help and exit
+#
+# Example:
+#    wazuh-mgr /var/ossec/bin/agent_control -lc
+#
+# -END USAGE-
+
+usage() {
+  perl -MFile::Basename -ne 'my $basename = basename $ARGV; s/\$0/$basename/ge; print if /BEGIN USAGE/../END USAGE/' $0 | grep -v USAGE | cut -c 3-
+  exit 0
+}
+
+[[ -z $1 ]] && usage
+
+while getopts "h" opt
+do
+  case $opt in
+  h)
+    usage;
+    ;;
+  * )
+    ;;
+  esac
+done
+shift $(( $OPTIND - 1 ))
+
+sudo docker exec -it $(sudo docker ps |  perl -ne '/(?:.*\s{2,}+){6}(.*)/ and print $1 if $_ =~ m@->514/(udp|tcp)@') $*
