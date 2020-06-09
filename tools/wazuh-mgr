@@ -7,7 +7,7 @@
 #   -h        display this help and exit
 #
 # Example:
-#    wazuh-mgr /var/ossec/bin/agent_control -lc
+#   $0 /var/ossec/bin/agent_control -lc
 #
 # -END USAGE-
 
