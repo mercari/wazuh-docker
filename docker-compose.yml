@@ -3,7 +3,7 @@ version: '2'
 
 services:
   wazuh:
-    image: k-oguma/wazuh:3.12.3_7.6.2
+    image: k-oguma/wazuh:3.12.3_7.6.2_k1
     hostname: wazuh-manager
     restart: always
     ports:
