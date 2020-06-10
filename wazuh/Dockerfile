@@ -18,7 +18,7 @@ RUN set -x && echo "deb https://packages.wazuh.com/3.x/apt/ stable main" | tee /
    echo "postfix postfix/main_mailer_type string 'Internet Site'" | debconf-set-selections && \
    groupadd -g 1000 ossec && useradd -u 1000 -g 1000 -d /var/ossec ossec
 
-RUN add-apt-repository universe && apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold" && \
+RUN add-apt-repository universe && apt update && apt upgrade -y -o Dpkg::Options::="--force-confold" && \
    apt-get --no-install-recommends --no-install-suggests -y install openssl postfix bsd-mailx python-boto python-pip  \
    apt-transport-https vim expect nodejs python-cryptography mailutils libsasl2-modules wazuh-manager=${WAZUH_VERSION} \
    wazuh-api=${WAZUH_VERSION} && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && rm -f \
@@ -33,6 +33,7 @@ RUN mkdir /entrypoint-scripts
 COPY config/entrypoint.sh /entrypoint.sh
 COPY config/00-wazuh.sh /entrypoint-scripts/00-wazuh.sh
 COPY config/01-config_filebeat.sh /entrypoint-scripts/01-config_filebeat.sh
+COPY config/02-slack-integration.sh /entrypoint-scripts/02-slack-integration.sh
 
 # Sync calls are due to https://github.com/docker/docker/issues/9547
 RUN chmod 755 /init.bash && \
@@ -42,7 +43,8 @@ RUN chmod 755 /init.bash && \
    dpkg -i filebeat-${FILEBEAT_VERSION}-amd64.deb && rm -f filebeat-${FILEBEAT_VERSION}-amd64.deb && \
    chmod 755 /entrypoint.sh && \
    chmod 755 /entrypoint-scripts/00-wazuh.sh && \
-   chmod 755 /entrypoint-scripts/01-config_filebeat.sh
+   chmod 755 /entrypoint-scripts/01-config_filebeat.sh && \
+   chmod 755 /entrypoint-scripts/02-slack-integration.sh
 
 COPY config/filebeat.yml /etc/filebeat/
 RUN chmod go-w /etc/filebeat/filebeat.yml
