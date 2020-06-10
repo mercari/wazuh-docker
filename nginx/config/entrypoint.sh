@@ -52,9 +52,9 @@ NGINX_TLS_PARAMS="ssl http2"
 
 echo "Configuring NGINX"
 
-[[ $NGINX_PORT != 443 ]] && unset NGINX_TLS_PARAMS
+[[ $NGINX_PORT != "443" ]] && unset NGINX_TLS_PARAMS
 
-if [[ $NGINX_PORT != 80 ]]; then
+if [[ $NGINX_PORT != "80" ]]; then
   cat > /etc/nginx/conf.d/default.conf <<EOF
 server {
     listen 80;
