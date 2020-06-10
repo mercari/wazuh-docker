@@ -14,7 +14,7 @@ services:
     environment:
       - API_USER=hoge
       - API_PASS=fuga
-      - SLACK_WEBHOOK_URL="${HOOK_URL}"
+      - SLACK_WEBHOOK_URL=${HOOK_URL}
       - SLACK_ALERT_LEVEL=10
     volumes:
       - wazuh_datastore:/var/ossec/data/:Z
