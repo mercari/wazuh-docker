@@ -14,6 +14,8 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 VOLUME ["/etc/nginx/conf.d"]
 
 ENV NGINX_NAME="foo" \
-    NGINX_PWD="bar"
+    NGINX_PWD="bar" \
+    NGINX_PORT="443" \
+    NGINX_URL_SCHEME="https"
 
 ENTRYPOINT [ "/entrypoint.sh" ]
