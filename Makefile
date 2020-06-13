@@ -19,12 +19,12 @@ run: group \
 	docker_compose
 
 group: ## add a group if there is no gid 1000 assigned
-	@if [ "x${shell sudo /usr/bin/grep 1000 /etc/group}" == "x" ];then\
+	@if [ "x${shell sudo /usr/bin/grep 1000 /etc/group}" = "x" ];then\
 		sudo groupadd -g 1000 elasticsearch ;\
 	fi
 
 user: ## add a user if there is no uid 1000 assigned
-	@if [ "x${shell sudo /usr/bin/grep 1000 /etc/passwd}" == "x" ];then\
+	@if [ "x${shell sudo /usr/bin/grep 1000 /etc/passwd}" = "x" ];then\
 		sudo useradd -u 1000 -g 1000 -s /sbin/nologin elasticsearch ;\
 	fi
 
