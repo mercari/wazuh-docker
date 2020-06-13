@@ -3,6 +3,8 @@
 # Wazuh slack integration
 #
 # Slack integration into wazuh container.
+#
+# Copyright (C) 2020 k-oguma / ktykogm (License MIT)
 
 WAZUH_INSTALL_PATH=/var/ossec
 
