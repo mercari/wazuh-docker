@@ -80,19 +80,20 @@ services:
       - ELASTICSEARCH_PASSWORD=fuga
 
   nginx:
-    image: k-oguma/wazuh-nginx:3.12.3_7.6.2_k1
+    image: ktykogm/wazuh-nginx:3.12.3_7.6.2_k1
     hostname: nginx
     restart: always
     environment:
-      - NGINX_PORT=8080
+      - NGINX_PORT=443
       - NGINX_CREDENTIALS=hoge:fuga
-      # Internal access via SSL termination on OAuth2_proxy.
-      - NGINX_URL_SCHEME=http
-      - BASIC_AUTH=no
+      ## If internal access via SSL termination on OAuth2_proxy or other.
+      #- NGINX_PORT=8080
+      #- NGINX_URL_SCHEME=http
+      #- BASIC_AUTH=no
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
+      #- "8080:8080"
     depends_on:
       - kibana
     links:
