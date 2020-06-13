@@ -1,9 +1,11 @@
 # Wazuh App Copyright (C) 2020 Wazuh Inc. (License GPLv2)
+# Update: k-oguma / ktykogm
+#   Here's a sample docker-compose.yml. For example, in the production environment will use the ansible jinja2 template.
 version: '2'
 
 services:
   wazuh:
-    image: k-oguma/wazuh:3.12.3_7.6.2_k1
+    image: ktykogm/wazuh:3.12.3_7.6.2_k2
     hostname: wazuh-manager
     restart: always
     ports:
@@ -12,10 +14,22 @@ services:
       - "514:514/udp"
       - "55000:55000"
     environment:
-      - API_USER=hoge
-      - API_PASS=fuga
-      - SLACK_WEBHOOK_URL=${HOOK_URL}
-      - SLACK_ALERT_LEVEL=10
+      API_USER: hoge
+      API_PASS: fuga
+      SLACK_WEBHOOK_URL:
+      SLACK_ALERT_LEVEL: 10
+      LOCAL_RULES: |-
+        <group name="syslog,sshd,">
+          <rule id="5706" level="6" overwrite="yes">
+            <if_sid>5700</if_sid>
+            <match>Did not receive identification string from</match>
+            <description>sshd: insecure connection attempt (scan).</description>
+            <group>recon,pci_dss_11.4,gpg13_4.12,gdpr_IV_35.7.d,nist_800_53_SI.4,</group>
+            <options>no_log</options>
+          </rule>
+        </group>
+
+       # You can configure with also /srv/docker-volumes/wazuh/etc/. But it's better to set it up with entrypoint and unify manage with environment variables here if not a lot of configures. (e.g. Like the 12factor app).
     volumes:
       - wazuh_datastore:/var/ossec/data/:Z
 

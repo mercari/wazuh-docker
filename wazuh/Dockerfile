@@ -34,6 +34,7 @@ COPY config/entrypoint.sh /entrypoint.sh
 COPY config/00-wazuh.sh /entrypoint-scripts/00-wazuh.sh
 COPY config/01-config_filebeat.sh /entrypoint-scripts/01-config_filebeat.sh
 COPY config/02-slack-integration.sh /entrypoint-scripts/02-slack-integration.sh
+COPY config/03-wazuh-ruleset.sh /entrypoint-scripts/03-wazuh-ruleset.sh
 
 # Sync calls are due to https://github.com/docker/docker/issues/9547
 RUN chmod 755 /init.bash && \
@@ -44,7 +45,8 @@ RUN chmod 755 /init.bash && \
    chmod 755 /entrypoint.sh && \
    chmod 755 /entrypoint-scripts/00-wazuh.sh && \
    chmod 755 /entrypoint-scripts/01-config_filebeat.sh && \
-   chmod 755 /entrypoint-scripts/02-slack-integration.sh
+   chmod 755 /entrypoint-scripts/02-slack-integration.sh && \
+   chmod 755 /entrypoint-scripts/03-wazuh-ruleset.sh
 
 COPY config/filebeat.yml /etc/filebeat/
 RUN chmod go-w /etc/filebeat/filebeat.yml
