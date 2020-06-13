@@ -11,10 +11,17 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   test:
-    runs-on: centos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Build of host runner
+        shell: bash
+        run: |
+          apt update -y
+          apt install grep
+          apt upgrade bash
       - name: Run a make all
+        shell: bash
         run: make all
