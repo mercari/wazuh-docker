@@ -16,12 +16,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Build of host runner
-        shell: bash
-        run: |
-          apt update -y
-          apt install grep
-          apt upgrade bash
+      - name: apt update
+        run:
+          apt update
       - name: Run a make all
         shell: bash
         run: make all
