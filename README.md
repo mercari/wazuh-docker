@@ -4,7 +4,7 @@
 [![Email](https://img.shields.io/badge/email-join-blue.svg)](https://groups.google.com/forum/#!forum/wazuh)
 [![Documentation](https://img.shields.io/badge/docs-view-green.svg)](https://documentation.wazuh.com)
 [![Documentation](https://img.shields.io/badge/web-view-green.svg)](https://wazuh.com)
-![](https://github.com/actions/hello-world/workflows/wazuh-docker-ci/badge.svg)
+![wazuh-docker-ci](https://github.com/k-oguma/wazuh-docker/workflows/wazuh-docker-ci/badge.svg?branch=master)
 
 In this repository you will find the containers to run:
 
