@@ -29,13 +29,19 @@ user: ## add a user if there is no uid 1000 assigned
 	fi
 
 directories: ## Make directories
-	sudo mkdir -p $(DOCKER_VOLUMES)/{wazuh,elasticsearch}
+	@for dir in wazuh elasticsearch;\
+	do\
+		sudo mkdir -p $(DOCKER_VOLUMES)/$$dir;\
+	done
 
 owner_and_group: ## Control owner and group setting.
 	sudo chown 1000:0 -R $(DOCKER_VOLUMES)/elasticsearch
 	@echo "finish."
 	@echo
-	ls -l $(DOCKER_VOLUMES)/{wazuh,elasticsearch}
+	@for dir in wazuh elasticsearch;\
+	do\
+		ls -l $(DOCKER_VOLUMES)/$$dir;\
+	done
 
 docker_compose: ## docker-compose up -d
 	docker-compose up -d
