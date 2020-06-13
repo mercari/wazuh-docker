@@ -17,15 +17,15 @@ jobs:
       - uses: whoan/docker-build-with-cache-action@v5
         with:
           username: ktykogm
-          password: "${{ secrets.DOCKER_HUB_PASSWORD }}"
           image_name: wazuh
           image_tag: 3.12.3_7.6.2_k2
+          push_image_and_stages: false
       - uses: whoan/docker-build-with-cache-action@v5
         with:
           username: ktykogm
-          password: "${{ secrets.DOCKER_HUB_PASSWORD }}"
           image_name: wazuh-nginx
           image_tag: 3.12.3_7.6.2_k1
+          push_image_and_stages: false
       - name: Run a make all
         shell: bash
         run: make all
