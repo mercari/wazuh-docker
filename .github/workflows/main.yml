@@ -18,7 +18,7 @@ jobs:
           fetch-depth: 0
       - name: apt update
         run:
-          apt update
+          sudo apt update
       - name: Run a make all
         shell: bash
         run: make all
