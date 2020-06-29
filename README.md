@@ -17,62 +17,25 @@ In addition, a docker-compose file is provided to launch the containers mentione
 
 * Elasticsearch cluster. In the Elasticsearch Dockerfile we can visualize variables to configure an Elasticsearch Cluster. These variables are used in the file *config_cluster.sh* to set them in the *elasticsearch.yml* configuration file. You can see the meaning of the node variables [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html) and other cluster settings [here](https://github.com/elastic/elasticsearch/blob/master/distribution/src/config/elasticsearch.yml).
 
-## Documentation
 
-* [Wazuh full documentation](http://documentation.wazuh.com)
-* [Wazuh documentation for Docker](https://documentation.wazuh.com/current/docker/index.html)
-* [Docker hub](https://hub.docker.com/u/wazuh)
+## Original repository
 
-## Directory structure
-
-	wazuh-docker
-	├── docker-compose.yml
-	├── kibana
-	│   ├── config
-	│   │   ├── entrypoint.sh
-	│   │   └── kibana.yml
-	│   └── Dockerfile
-	├── LICENSE
-	├── nginx
-	│   ├── config
-	│   │   └── entrypoint.sh
-	│   └── Dockerfile
-	├── README.md
-	├── CHANGELOG.md
-	├── VERSION
-	├── test.txt
-	└── wazuh
-	    ├── config
-	    │   ├── data_dirs.env
-	    │   ├── entrypoint.sh
-	    │   ├── filebeat.runit.service
-	    │   ├── filebeat.yml
-	    │   ├── init.bash
-	    │   ├── postfix.runit.service
-	    │   ├── wazuh-api.runit.service
-	    │   └── wazuh.runit.service
-	    └── Dockerfile
+[wazuh/wazuh-docker](https://github.com/wazuh/wazuh-docker)
 
 
-## Branches
+## About Mercari's fork
 
-* `stable` branch on correspond to the latest Wazuh-Docker stable version.
-* `master` branch contains the latest code, be aware of possible bugs on this branch.
-* `Wazuh.Version_ElasticStack.Version` (for example 3.10.2_7.5.0) branch. This branch contains the current release referenced in Docker Hub. The container images are installed under the current version of this branch.
+### What's this
 
-## Credits and Thank you
+The repository is a fork of [wazuh/wazuh-docker](https://github.com/wazuh/wazuh-docker) that is modified to meet Mercari's needs.
 
-These Docker containers are based on:
+### About additional features
 
-*  "deviantony" dockerfiles which can be found at [https://github.com/deviantony/docker-elk](https://github.com/deviantony/docker-elk)
-*  "xetus-oss" dockerfiles, which can be found at [https://github.com/xetus-oss/docker-ossec-server](https://github.com/xetus-oss/docker-ossec-server)
+We have a general-purpose for this repository. It will probably work in your environment, but we do not guarantee or compensate for it.
 
-We thank you them and everyone else who has contributed to this project.
+### Contribute
 
-## License and copyright
+We think it's better to send a pull request to the original repository, unless it concerns only our this fork repo.
 
-Wazuh Docker Copyright (C) 2020 Wazuh Inc. (License GPLv2)
-
-## Web references
-
-[Wazuh website](http://wazuh.com)
+[wazuh/wazuh-docker](https://github.com/wazuh/wazuh-docker)
+`Wazuh Docker Copyright (C) 2020 Wazuh Inc. (License GPLv2)`
